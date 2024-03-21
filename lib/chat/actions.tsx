@@ -8,7 +8,8 @@ import {
   render,
   createStreamableValue
 } from 'ai/rsc'
-import OpenAI from 'openai'
+// import OpenAI from 'openai'
+import Anthropic from '@anthropic-ai/sdk';
 
 import {
   spinner,
@@ -36,9 +37,13 @@ import { SpinnerMessage, UserMessage } from '@/components/stocks/message'
 import { Chat } from '@/lib/types'
 import { auth } from '@/auth'
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY || ''
-})
+// const openai = new OpenAI({
+//   apiKey: process.env.OPENAI_API_KEY || ''
+// })
+
+const anthropic = new Anthropic({
+    apiKey: process.env.ANTHROPIC_API_KEY || '',
+  })
 
 async function confirmPurchase(symbol: string, price: number, amount: number) {
   'use server'
@@ -142,8 +147,8 @@ async function submitUserMessage(content: string) {
   let textNode: undefined | React.ReactNode
 
   const ui = render({
-    model: 'gpt-3.5-turbo',
-    provider: openai,
+    model: 'claude-3-opus-20240229',
+    provider: anthropic,
     initial: <SpinnerMessage />,
     messages: [
       {
